@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APICatalogo.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250122234242_CreateTables_Categoria_Produto")]
+    [Migration("20250123012739_CreateTables_Categoria_Produto")]
     partial class CreateTables_Categoria_Produto
     {
         /// <inheritdoc />
@@ -70,7 +70,7 @@ namespace APICatalogo.Migrations
                     b.Property<float>("Estoque")
                         .HasColumnType("float");
 
-                    b.Property<string>("ImgUrlImagemUrl")
+                    b.Property<string>("ImagemUrl")
                         .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("varchar(300)");

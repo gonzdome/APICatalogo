@@ -23,7 +23,7 @@ public class Produto
 
     [Required]
     [StringLength(300)]
-    public string? ImgUrlImagemUrl { get; set; }
+    public string? ImagemUrl { get; set; }
 
     public float Estoque { get; set; }
     public DateTime DataCadastro { get; set; }

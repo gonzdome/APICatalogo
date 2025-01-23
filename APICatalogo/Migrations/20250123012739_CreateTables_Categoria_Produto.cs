@@ -43,7 +43,7 @@ namespace APICatalogo.Migrations
                     Descricao = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Preco = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    ImgUrlImagemUrl = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false)
+                    ImagemUrl = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Estoque = table.Column<float>(type: "float", nullable: false),
                     DataCadastro = table.Column<DateTime>(type: "datetime(6)", nullable: false),
