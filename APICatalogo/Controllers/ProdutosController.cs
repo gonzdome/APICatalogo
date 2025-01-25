@@ -24,4 +24,14 @@ public class ProdutosController : ControllerBase
 
         return response;
     }
+
+    [HttpGet("{id:int}")]
+    public ActionResult<Produto> GetById(int id)
+    {
+        var response = _context.Produtos.FirstOrDefault(p => p.ProdutoId == id);
+        if (response is null)
+            return NotFound("Produto não encontrado!");
+
+        return response;
+    }
 }
