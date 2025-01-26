@@ -1,6 +1,7 @@
 ﻿using APICatalogo.Context;
 using APICatalogo.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace APICatalogo.Controllers;
 
@@ -25,7 +26,7 @@ public class ProdutosController : ControllerBase
         return response;
     }
 
-    [HttpGet("{id:int}", Name="GetProduct")]
+    [HttpGet("{id:int}", Name = "GetProduct")]
     public ActionResult<Produto> GetById(int id)
     {
         var response = _context.Produtos.FirstOrDefault(p => p.ProdutoId == id);
@@ -45,5 +46,20 @@ public class ProdutosController : ControllerBase
         _context.SaveChanges();
 
         return new CreatedAtRouteResult("GetProduct", new { id = product.ProdutoId }, product);
+    }
+
+    [HttpPut("{id:int}")]
+    public ActionResult Put(int id, Produto product)
+    {
+        if(id != product.ProdutoId)
+            return BadRequest();
+
+        if (product is null)
+            return BadRequest();
+
+        _context.Produtos.Entry(product).State = EntityState.Modified;
+        _context.SaveChanges();
+
+        return Ok(product);
     }
 }
