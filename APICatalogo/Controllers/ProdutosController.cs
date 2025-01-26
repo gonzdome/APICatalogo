@@ -21,7 +21,7 @@ public class ProdutosController : ControllerBase
     {
         var response = _context.Produtos.ToList();
         if (response is null)
-            return NotFound("Produtos não encontrados!");
+            return NotFound("Products not found!");
 
         return response;
     }
@@ -31,7 +31,7 @@ public class ProdutosController : ControllerBase
     {
         var response = _context.Produtos.FirstOrDefault(p => p.ProdutoId == id);
         if (response is null)
-            return NotFound("Produto não encontrado!");
+            return NotFound("Product not found!");
 
         return response;
     }
