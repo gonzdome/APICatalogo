@@ -26,6 +26,16 @@ public class CategoriasController : ControllerBase
         return response;
     }
 
+    [HttpGet("ProductCategories")]
+    public ActionResult<IEnumerable<Categoria>> GetProductCategories()
+    {
+        var response = _context.Categorias.Include(c => c.Produtos).ToList();
+        if (response is null)
+            return NotFound("Categories not found!");
+
+        return response;
+    }
+
     [HttpGet("{id:int}", Name = "GetCategory")]
     public ActionResult<Categoria> GetById(int id)
     {
