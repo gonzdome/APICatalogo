@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace APICatalogo.Controllers;
 
-[Route("[controller]")]
+[Route("Categories")]
 [ApiController]
 public class CategoriasController : ControllerBase
 {

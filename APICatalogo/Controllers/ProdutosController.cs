@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace APICatalogo.Controllers;
 
-[Route("[controller]")]
+[Route("Products")]
 [ApiController]
 public class ProdutosController : ControllerBase
 {
