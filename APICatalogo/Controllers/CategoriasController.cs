@@ -19,7 +19,7 @@ public class CategoriasController : ControllerBase
     [HttpGet]
     public ActionResult<IEnumerable<Categoria>> Get()
     {
-        var response = _context.Categorias.ToList();
+        var response = _context.Categorias.AsNoTracking().ToList();
         if (response is null)
             return NotFound("Categories not found!");
 
@@ -29,7 +29,7 @@ public class CategoriasController : ControllerBase
     [HttpGet("ProductCategories")]
     public ActionResult<IEnumerable<Categoria>> GetProductCategories()
     {
-        var response = _context.Categorias.Include(c => c.Produtos).ToList();
+        var response = _context.Categorias.Include(c => c.Produtos).AsNoTracking().ToList();
         if (response is null)
             return NotFound("Categories not found!");
 

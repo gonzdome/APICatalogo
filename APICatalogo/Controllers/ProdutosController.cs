@@ -19,7 +19,7 @@ public class ProdutosController : ControllerBase
     [HttpGet]
     public ActionResult<IEnumerable<Produto>> Get()
     {
-        var response = _context.Produtos.ToList();
+        var response = _context.Produtos.AsNoTracking().ToList();
         if (response is null)
             return NotFound("Products not found!");
 
