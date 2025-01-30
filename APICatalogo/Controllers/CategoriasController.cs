@@ -19,70 +19,113 @@ public class CategoriasController : ControllerBase
     [HttpGet]
     public ActionResult<IEnumerable<Categoria>> Get()
     {
-        var response = _context.Categorias.AsNoTracking().ToList();
-        if (response is null)
-            return NotFound("Categories not found!");
+        try
+        {
+            var response = _context.Categorias.AsNoTracking().ToList();
+            if (response is null)
+                return NotFound("Categories not found!");
 
-        return response;
+            return response;
+        }
+        catch (Exception)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurred when calling: Get");
+        }
+
     }
 
     [HttpGet("ProductCategories")]
     public ActionResult<IEnumerable<Categoria>> GetProductCategories()
     {
-        var response = _context.Categorias.Include(c => c.Produtos).AsNoTracking().ToList();
-        if (response is null)
-            return NotFound("Categories not found!");
+        try
+        {
+            var response = _context.Categorias.Include(c => c.Produtos).AsNoTracking().ToList();
+            if (response is null)
+                return NotFound("Categories not found!");
 
-        return response;
+            return response;
+        }
+        catch (Exception)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurred when calling: ProductCategories");
+        }
     }
 
     [HttpGet("{id:int}", Name = "GetCategory")]
     public ActionResult<Categoria> GetById(int id)
     {
-        var response = _context.Categorias.FirstOrDefault(p => p.CategoriaId == id);
-        if (response is null)
-            return NotFound("Category not found!");
+        try
+        {
+            var response = _context.Categorias.FirstOrDefault(p => p.CategoriaId == id);
+            if (response is null)
+                return NotFound("Category not found!");
 
-        return response;
+            return response;
+        }
+        catch (Exception)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurred when calling: GetById");
+        }       
     }
 
     [HttpPost]
     public ActionResult Post(Categoria categoria)
     {
-        if (categoria is null)
-            return BadRequest();
+        try
+        {
+            if (categoria is null)
+                return BadRequest();
 
-        _context.Categorias.Add(categoria);
-        _context.SaveChanges();
+            _context.Categorias.Add(categoria);
+            _context.SaveChanges();
 
-        return new CreatedAtRouteResult("GetCategory", new { id = categoria.CategoriaId }, categoria);
+            return new CreatedAtRouteResult("GetCategory", new { id = categoria.CategoriaId }, categoria);
+        }
+        catch (Exception)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurred when calling: Post");
+        }  
     }
 
     [HttpPut("{id:int}")]
     public ActionResult Put(int id, Categoria categoria)
     {
-        if(id != categoria.CategoriaId)
-            return BadRequest();
+        try
+        {
+            if (id != categoria.CategoriaId)
+                return BadRequest();
 
-        if (categoria is null)
-            return BadRequest();
+            if (categoria is null)
+                return BadRequest();
 
-        _context.Categorias.Entry(categoria).State = EntityState.Modified;
-        _context.SaveChanges();
+            _context.Categorias.Entry(categoria).State = EntityState.Modified;
+            _context.SaveChanges();
 
-        return Ok(categoria);
+            return Ok(categoria);
+        }
+        catch (Exception)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurred when calling: Put");
+        }       
     }
 
     [HttpDelete("{id:int}")]
     public ActionResult DeleteById(int id)
     {
-        var categoria = _context.Categorias.FirstOrDefault(p => p.CategoriaId == id);
-        if (categoria is null)
-            return NotFound("Category not found!");
+        try
+        {
+            var categoria = _context.Categorias.FirstOrDefault(p => p.CategoriaId == id);
+            if (categoria is null)
+                return NotFound("Category not found!");
 
-        _context.Categorias.Remove(categoria);
-        _context.SaveChanges();
+            _context.Categorias.Remove(categoria);
+            _context.SaveChanges();
 
-        return Ok(categoria);
+            return Ok(categoria);
+        }
+        catch (Exception)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurred when calling: DeleteById");
+        }
     }
 }
