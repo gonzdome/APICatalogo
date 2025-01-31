@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace APICatalogo.Controllers;
 
-[Route("Products")]
+[Route("api/products")]
 [ApiController]
 public class ProdutosController : ControllerBase
 {
@@ -16,8 +16,8 @@ public class ProdutosController : ControllerBase
         _context = context;
     }
 
-    [HttpGet]
-    public ActionResult<IEnumerable<Produto>> Get()
+    [HttpGet("GetProducts")]
+    public ActionResult<IEnumerable<Produto>> GetProducts()
     {
         try
         {
@@ -29,13 +29,13 @@ public class ProdutosController : ControllerBase
         }
         catch (Exception)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurred when calling: Get");
+            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurred when calling: GetProducts");
         }
 
     }
 
-    [HttpGet("{id:int}", Name = "GetProduct")]
-    public ActionResult<Produto> GetById(int id)
+    [HttpGet("{id:int}")]
+    public ActionResult<Produto> GetProductDetailsById(int id)
     {
         try
         {
@@ -47,13 +47,13 @@ public class ProdutosController : ControllerBase
         }
         catch (Exception)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurred when calling: GetById");
+            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurred when calling: GetProductDetailsById");
         }
 
     }
 
-    [HttpPost]
-    public ActionResult Post(Produto product)
+    [HttpPost("CreateProduct")]
+    public ActionResult CreateProduct(Produto product)
     {
         try
         {
@@ -67,13 +67,13 @@ public class ProdutosController : ControllerBase
         }
         catch (Exception)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurred when calling: Post");
+            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurred when calling: CreateProduct");
         }
 
     }
 
     [HttpPut("{id:int}")]
-    public ActionResult Put(int id, Produto product)
+    public ActionResult UpdateProductById(int id, Produto product)
     {
         try
         {
@@ -90,13 +90,13 @@ public class ProdutosController : ControllerBase
         }
         catch (Exception)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurred when calling: Put");
+            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurred when calling: UpdateProductById");
         }
 
     }
 
     [HttpDelete("{id:int}")]
-    public ActionResult DeleteById(int id)
+    public ActionResult DeleteProductById(int id)
     {
         try
         {
@@ -111,7 +111,7 @@ public class ProdutosController : ControllerBase
         }
         catch (Exception)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurred when calling: DeleteById");
+            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurred when calling: DeleteProductById");
         }
 
     }
