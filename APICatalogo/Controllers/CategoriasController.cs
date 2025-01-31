@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace APICatalogo.Controllers;
 
-[Route("Categories")]
+[Route("api/categories")]
 [ApiController]
 public class CategoriasController : ControllerBase
 {
@@ -16,8 +16,8 @@ public class CategoriasController : ControllerBase
         _context = context;
     }
 
-    [HttpGet]
-    public ActionResult<IEnumerable<Categoria>> Get()
+    [HttpGet("GetCategories")]
+    public ActionResult<IEnumerable<Categoria>> GetCategories()
     {
         try
         {
@@ -29,12 +29,12 @@ public class CategoriasController : ControllerBase
         }
         catch (Exception)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurred when calling: Get");
+            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurred when calling: GetCategories");
         }
 
     }
 
-    [HttpGet("ProductCategories")]
+    [HttpGet("GetProductCategories")]
     public ActionResult<IEnumerable<Categoria>> GetProductCategories()
     {
         try
@@ -47,12 +47,12 @@ public class CategoriasController : ControllerBase
         }
         catch (Exception)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurred when calling: ProductCategories");
+            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurred when calling: GetProductCategories");
         }
     }
 
-    [HttpGet("{id:int}", Name = "GetCategory")]
-    public ActionResult<Categoria> GetById(int id)
+    [HttpGet("{id:int}")]
+    public ActionResult<Categoria> GetCategoryDetailsById(int id)
     {
         try
         {
@@ -64,12 +64,12 @@ public class CategoriasController : ControllerBase
         }
         catch (Exception)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurred when calling: GetById");
-        }       
+            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurred when calling: GetCategoryDetailsById");
+        }
     }
 
-    [HttpPost]
-    public ActionResult Post(Categoria categoria)
+    [HttpPost("CreateCategory")]
+    public ActionResult CreateCategory(Categoria categoria)
     {
         try
         {
@@ -83,12 +83,12 @@ public class CategoriasController : ControllerBase
         }
         catch (Exception)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurred when calling: Post");
-        }  
+            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurred when calling: CreateCategory");
+        }
     }
 
     [HttpPut("{id:int}")]
-    public ActionResult Put(int id, Categoria categoria)
+    public ActionResult UpdateCategoryById(int id, Categoria categoria)
     {
         try
         {
@@ -105,12 +105,12 @@ public class CategoriasController : ControllerBase
         }
         catch (Exception)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurred when calling: Put");
-        }       
+            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurred when calling: UpdateCategoryById");
+        }
     }
 
     [HttpDelete("{id:int}")]
-    public ActionResult DeleteById(int id)
+    public ActionResult DeleteCategoryById(int id)
     {
         try
         {
@@ -125,7 +125,7 @@ public class CategoriasController : ControllerBase
         }
         catch (Exception)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurred when calling: DeleteById");
+            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurred when calling: DeleteCategoryById");
         }
     }
 }
