@@ -51,7 +51,7 @@ public class CategoriasController : ControllerBase
         }
     }
 
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:int}", Name = "GetCategoryDetailsById")]
     public ActionResult<Categoria> GetCategoryDetailsById(int id)
     {
         try
@@ -69,7 +69,7 @@ public class CategoriasController : ControllerBase
     }
 
     [HttpPost("CreateCategory")]
-    public ActionResult CreateCategory(Categoria categoria)
+    public ActionResult<Categoria> CreateCategory(Categoria categoria)
     {
         try
         {
@@ -79,7 +79,7 @@ public class CategoriasController : ControllerBase
             _context.Categorias.Add(categoria);
             _context.SaveChanges();
 
-            return new CreatedAtRouteResult("GetCategory", new { id = categoria.CategoriaId }, categoria);
+            return new CreatedAtRouteResult("GetCategoryDetailsById", new { id = categoria.CategoriaId }, categoria);
         }
         catch (Exception)
         {
@@ -87,8 +87,8 @@ public class CategoriasController : ControllerBase
         }
     }
 
-    [HttpPut("{id:int}")]
-    public ActionResult UpdateCategoryById(int id, Categoria categoria)
+    [HttpPut("{id:int}", Name = "UpdateCategoryById")]
+    public ActionResult<Categoria> UpdateCategoryById(int id, Categoria categoria)
     {
         try
         {
@@ -109,8 +109,8 @@ public class CategoriasController : ControllerBase
         }
     }
 
-    [HttpDelete("{id:int}")]
-    public ActionResult DeleteCategoryById(int id)
+    [HttpDelete("{id:int}", Name = "DeleteCategoryById")]
+    public ActionResult<Categoria> DeleteCategoryById(int id)
     {
         try
         {
