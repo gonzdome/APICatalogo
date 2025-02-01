@@ -17,11 +17,11 @@ public class ProdutosController : ControllerBase
     }
 
     [HttpGet("GetProducts")]
-    public ActionResult<IEnumerable<Produto>> GetProducts()
+    public async Task<ActionResult<IEnumerable<Produto>>> GetProducts()
     {
         try
         {
-            var response = _context.Produtos.AsNoTracking().ToList();
+            var response = await _context.Produtos.AsNoTracking().ToListAsync();
             if (response is null)
                 return NotFound("Products not found!");
 
@@ -35,11 +35,11 @@ public class ProdutosController : ControllerBase
     }
 
     [HttpGet("{id:int}", Name = "GetProductDetailsById")]
-    public ActionResult<Produto> GetProductDetailsById(int id)
+    public async Task<ActionResult<Produto>> GetProductDetailsById(int id)
     {
         try
         {
-            var response = _context.Produtos.FirstOrDefault(p => p.ProdutoId == id);
+            var response = await _context.Produtos.FirstOrDefaultAsync(p => p.ProdutoId == id);
             if (response is null)
                 return NotFound("Product not found!");
 
