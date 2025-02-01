@@ -34,7 +34,7 @@ public class ProdutosController : ControllerBase
 
     }
 
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:int}", Name = "GetProductDetailsById")]
     public ActionResult<Produto> GetProductDetailsById(int id)
     {
         try
@@ -52,8 +52,9 @@ public class ProdutosController : ControllerBase
 
     }
 
-    [HttpPost("CreateProduct")]
-    public ActionResult CreateProduct(Produto product)
+    [HttpPost]
+    [Route("CreateProduct")]
+    public ActionResult<Produto> CreateProduct(Produto product)
     {
         try
         {
@@ -63,7 +64,7 @@ public class ProdutosController : ControllerBase
             _context.Produtos.Add(product);
             _context.SaveChanges();
 
-            return new CreatedAtRouteResult("GetProduct", new { id = product.ProdutoId }, product);
+            return new CreatedAtRouteResult("GetProductDetailsById", new { id = product.ProdutoId }, product);
         }
         catch (Exception)
         {
@@ -72,8 +73,8 @@ public class ProdutosController : ControllerBase
 
     }
 
-    [HttpPut("{id:int}")]
-    public ActionResult UpdateProductById(int id, Produto product)
+    [HttpPut("{id:int}", Name = "UpdateProductById")]
+    public ActionResult<Produto> UpdateProductById(int id, Produto product)
     {
         try
         {
@@ -95,8 +96,8 @@ public class ProdutosController : ControllerBase
 
     }
 
-    [HttpDelete("{id:int}")]
-    public ActionResult DeleteProductById(int id)
+    [HttpDelete("{id:int}", Name = "DeleteProductById")]
+    public ActionResult<Produto> DeleteProductById(int id)
     {
         try
         {
