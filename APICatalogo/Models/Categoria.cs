@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using APICatalogo.Validation;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -17,6 +18,7 @@ public class Categoria
 
     [Required(ErrorMessage = "O nome é obrigatório")]
     [StringLength(20, ErrorMessage = "O nome deve ter entre 5 e 20 caracteres", MinimumLength = 5)]
+    [FirstLetterUpperCase]
     public string? Nome { get; set; }
 
     [Required]
