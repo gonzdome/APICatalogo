@@ -1,5 +1,6 @@
 ﻿using APICatalogo.Context;
 using APICatalogo.Models;
+using APICatalogo.Repositories.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,71 +10,46 @@ namespace APICatalogo.Controllers;
 [ApiController]
 public class ProdutosController : ControllerBase
 {
-    private readonly AppDbContext _context;
+    private readonly IProdutoRepository _produtoRepository;
 
-    public ProdutosController(AppDbContext context)
+    public ProdutosController(IProdutoRepository produtoRepository)
     {
-        _context = context;
+        _produtoRepository = produtoRepository;
     }
 
     [HttpGet("GetProducts")]
     public async Task<ActionResult<IEnumerable<Produto>>> GetProducts()
     {
-        var response = await _context.Produtos.AsNoTracking().ToListAsync();
-        if (response is null)
-            return NotFound("Products not found!");
-
-        return response;
+        var produto =  _produtoRepository.GetProducts();
+        return Ok(produto);
     }
 
     [HttpGet("{id:int}", Name = "GetProductDetailsById")]
     public async Task<ActionResult<Produto>> GetProductDetailsById(int id)
     {
-        var response = await _context.Produtos.FirstOrDefaultAsync(p => p.ProdutoId == id);
-        if (response is null)
-            return NotFound("Product not found!");
-
-        return response;
+        var produto = _produtoRepository.GetProductDetailsById(id);
+        return Ok(produto);
     }
 
     [HttpPost]
     [Route("CreateProduct")]
-    public ActionResult<Produto> CreateProduct(Produto product)
+    public ActionResult<Produto> CreateProduct(Produto produtoPayload)
     {
-        if (product is null)
-            return BadRequest();
-
-        _context.Produtos.Add(product);
-        _context.SaveChanges();
-
-        return new CreatedAtRouteResult("GetProductDetailsById", new { id = product.ProdutoId }, product);
+        var produto = _produtoRepository.CreateProduct(produtoPayload);
+        return Ok(produto);
     }
 
     [HttpPut("{id:int}", Name = "UpdateProductById")]
-    public ActionResult<Produto> UpdateProductById(int id, Produto product)
+    public ActionResult<Produto> UpdateProductById(int id, Produto produtoPayload)
     {
-        if (id != product.ProdutoId)
-            return BadRequest();
-
-        if (product is null)
-            return BadRequest();
-
-        _context.Produtos.Entry(product).State = EntityState.Modified;
-        _context.SaveChanges();
-
-        return Ok(product);
+        var produto = _produtoRepository.UpdateProductById(id, produtoPayload);
+        return Ok(produto);
     }
 
     [HttpDelete("{id:int}", Name = "DeleteProductById")]
     public ActionResult<Produto> DeleteProductById(int id)
     {
-        var product = _context.Produtos.FirstOrDefault(p => p.ProdutoId == id);
-        if (product is null)
-            return NotFound("Product not found!");
-
-        _context.Produtos.Remove(product);
-        _context.SaveChanges();
-
-        return Ok(product);
+        var produto = _produtoRepository.DeleteProductById(id);
+        return Ok(produto);
     }
 }
