@@ -49,13 +49,13 @@ public class ProdutoRepository : IProdutoRepository
 
     public Produto UpdateProductById(int id, Produto product)
     {
-        var produto = _context.Produtos.FirstOrDefault(p => p.ProdutoId == id);
-        if (produto is null)
-            throw new ArgumentNullException(nameof(produto));
+        var productById = _context.Produtos.FirstOrDefault(p => p.ProdutoId == id);
+        if (productById is null)
+            throw new ArgumentNullException(nameof(productById));
 
-        _context.Produtos.Update(produto);
+        _context.Produtos.Update(product);
         _context.SaveChanges();
 
-        return produto;
+        return product;
     }
 }
