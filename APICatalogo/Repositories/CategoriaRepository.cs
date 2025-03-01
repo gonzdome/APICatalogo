@@ -40,15 +40,16 @@ public class CategoriaRepository : ICategoriaRepository
         return categoria;
     }
 
-    public Categoria UpdateCategoryById(int id, Categoria categoria)
+    public Categoria UpdateCategoryById(int id, Categoria category)
     {
-        if (categoria is null)
-            throw new ArgumentNullException(nameof(categoria));
+        var categoryById = _context.Categorias.FirstOrDefault(p => p.CategoriaId == id);
+        if (categoryById is null)
+            throw new ArgumentNullException(nameof(categoryById));
 
-        _context.Categorias.Entry(categoria).State = EntityState.Modified;
+        _context.Categorias.Entry(category).State = EntityState.Modified;
         _context.SaveChanges();
 
-        return categoria;
+        return category;
     }
 
     public Categoria DeleteCategoryById(int id)
