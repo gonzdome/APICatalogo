@@ -1,6 +1,6 @@
 ﻿using APICatalogo.Context;
 using APICatalogo.Models;
-using APICatalogo.Repositories.Interface;
+using APICatalogo.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,24 +10,24 @@ namespace APICatalogo.Controllers;
 [ApiController]
 public class ProdutosController : ControllerBase
 {
-    private readonly IProdutoRepository _produtoRepository;
+    private readonly IProdutoService _produtoService;
 
-    public ProdutosController(IProdutoRepository produtoRepository)
+    public ProdutosController(IProdutoService produtoService)
     {
-        _produtoRepository = produtoRepository;
+        _produtoService = produtoService;
     }
 
     [HttpGet("GetProducts")]
     public async Task<ActionResult<IEnumerable<Produto>>> GetProducts()
     {
-        var produto =  _produtoRepository.GetProducts();
+        var produto =  _produtoService.GetProducts();
         return Ok(produto);
     }
 
     [HttpGet("{id:int}", Name = "GetProductDetailsById")]
     public async Task<ActionResult<Produto>> GetProductDetailsById(int id)
     {
-        var produto = _produtoRepository.GetProductDetailsById(id);
+        var produto = _produtoService.GetProductDetailsById(id);
         return Ok(produto);
     }
 
@@ -35,21 +35,21 @@ public class ProdutosController : ControllerBase
     [Route("CreateProduct")]
     public ActionResult<Produto> CreateProduct(Produto produtoPayload)
     {
-        var produto = _produtoRepository.CreateProduct(produtoPayload);
+        var produto = _produtoService.CreateProduct(produtoPayload);
         return Ok(produto);
     }
 
     [HttpPut("{id:int}", Name = "UpdateProductById")]
-    public ActionResult<Produto> UpdateProductById(int id, Produto produtoPayload)
+    public ActionResult<Produto> UpdateProductById(int id, Produto productToUpdate)
     {
-        var produto = _produtoRepository.UpdateProductById(id, produtoPayload);
+        var produto = _produtoService.UpdateProductById(id, productToUpdate);
         return Ok(produto);
     }
 
     [HttpDelete("{id:int}", Name = "DeleteProductById")]
     public ActionResult<Produto> DeleteProductById(int id)
     {
-        var produto = _produtoRepository.DeleteProductById(id);
+        var produto = _produtoService.DeleteProductById(id);
         return Ok(produto);
     }
 }
