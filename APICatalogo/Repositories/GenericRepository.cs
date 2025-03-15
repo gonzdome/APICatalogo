@@ -1,5 +1,5 @@
 ﻿using APICatalogo.Context;
-using APICatalogo.Repositories.Interface;
+using APICatalogo.Repositories.Interfaces;
 using System.Linq.Expressions;
 
 namespace APICatalogo.Repositories
