@@ -25,23 +25,17 @@ namespace APICatalogo.Repositories
         public T Create(T entity)
         {
             _context.Set<T>().Add(entity);
-            return SaveChanges(entity);
+            return entity;
         }
         public T Update(T entity)
         {
             _context.Set<T>().Update(entity);
-            return SaveChanges(entity);
+            return entity;
         }
 
         public T Delete(T entity)
         {
             _context.Set<T>().Remove(entity);
-            return SaveChanges(entity);
-        }
-
-        private T SaveChanges(T entity)
-        {
-            _context.SaveChanges();
             return entity;
         }
     }
