@@ -7,16 +7,16 @@ namespace APICatalogo.Services;
 
 public class ProdutoService : IProdutoService
 {
-    private readonly IProdutoRepository _produtoRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public ProdutoService(IProdutoRepository produtoRepository)
+    public ProdutoService(IUnitOfWork unitOfWork)
     {
-        _produtoRepository = produtoRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<IEnumerable<Produto>> GetProducts()
     {
-        return _produtoRepository.GetAll();
+        return _unitOfWork.ProdutoRepository.GetAll();
     }
 
     public async Task<Produto> GetProductDetailsById(int id)
@@ -27,29 +27,42 @@ public class ProdutoService : IProdutoService
 
     IEnumerable<Produto> IProdutoService.GetProductsByCategoryId(int categoryId)
     {
-        return _produtoRepository.GetProductsByCategoryId(categoryId);
+        return _unitOfWork.ProdutoRepository.GetProductsByCategoryId(categoryId);
     }
 
     public Produto CreateProduct(Produto produtoPayload)
     {
-        var product = _produtoRepository.Create(produtoPayload);
+        var product = _unitOfWork.ProdutoRepository.Create(produtoPayload);
+        _unitOfWork.Commit();
         return product;
     }
 
     public Produto UpdateProductById(int id, Produto productToUpdate)
     {
         var product = GetAndReturnProduct(id);
-        return _produtoRepository.Update(productToUpdate);
+
+        product.Nome = productToUpdate.Nome;
+        product.Preco = productToUpdate.Preco;
+        product.Descricao = productToUpdate.Descricao;
+        product.Estoque = productToUpdate.Estoque;
+        product.ImagemUrl = productToUpdate.ImagemUrl;
+        product.CategoriaId = productToUpdate.CategoriaId;
+
+        var updatedProduct = _unitOfWork.ProdutoRepository.Update(product);
+        _unitOfWork.Commit();
+        return updatedProduct;
     }
 
     public Produto DeleteProductById(int id)
     {
         var product = GetAndReturnProduct(id);
-        return _produtoRepository.Delete(product);
+        var deletedProduct = _unitOfWork.ProdutoRepository.Delete(product);
+        _unitOfWork.Commit();
+        return deletedProduct;
     }
     private Produto? GetAndReturnProduct(int id)
     {
-        var product = _produtoRepository.Get(p => p.ProdutoId == id);
+        var product = _unitOfWork.ProdutoRepository.Get(p => p.ProdutoId == id);
         if (product == null)
             throw new Exception($"Product with id {id} not found!");
 
