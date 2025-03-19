@@ -8,16 +8,16 @@ namespace APICatalogo.Services;
 
 public class CategoriaService : ICategoriaService
 {
-    private readonly ICategoriaRepository _categoriaRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CategoriaService(ICategoriaRepository categoriaRepository)
+    public CategoriaService(IUnitOfWork unitOfWork)
     {
-        _categoriaRepository = categoriaRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public IEnumerable<Categoria> GetCategories()
     {
-        return _categoriaRepository.GetAll();
+        return _unitOfWork.CategoriaRepository.GetAll();
     }
 
     public Categoria GetCategoryDetailsById(int id)
@@ -28,30 +28,39 @@ public class CategoriaService : ICategoriaService
 
     public IEnumerable<Categoria> GetProductCategories()
     {
-        return _categoriaRepository.GetProductCategories();
+        return _unitOfWork.CategoriaRepository.GetProductCategories();
     }
 
     public Categoria CreateCategory(Categoria categoriaPayload)
     {
-        return _categoriaRepository.Create(categoriaPayload);
-    }
-
-    public Categoria DeleteCategoryById(int id)
-    {
-        var category = GetAndReturnCategory(id);
-        return _categoriaRepository.Delete(category);
+        var category = _unitOfWork.CategoriaRepository.Create(categoriaPayload);
+        _unitOfWork.Commit();
+        return category;
     }
 
     public Categoria UpdateCategoryById(int id, Categoria categoryToUpdate)
     {
         var category = GetAndReturnCategory(id);
 
-        return _categoriaRepository.Update(categoryToUpdate);
+        category.Nome = categoryToUpdate.Nome;
+        category.ImagemUrl = categoryToUpdate.ImagemUrl;
+
+        var updatedCategory = _unitOfWork.CategoriaRepository.Update(category);
+        _unitOfWork.Commit();
+        return updatedCategory;
+    }
+
+    public Categoria DeleteCategoryById(int id)
+    {
+        var category = GetAndReturnCategory(id);
+        var deletedCategory = _unitOfWork.CategoriaRepository.Delete(category);
+        _unitOfWork.Commit();
+        return deletedCategory;
     }
 
     private Categoria? GetAndReturnCategory(int id)
     {
-        var category = _categoriaRepository.Get(p => p.CategoriaId == id);
+        var category = _unitOfWork.CategoriaRepository.Get(p => p.CategoriaId == id);
         if (category == null)
             throw new Exception($"Categoria with id {id} not found!");
 
