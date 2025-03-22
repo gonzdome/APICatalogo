@@ -1,4 +1,5 @@
 ﻿using APICatalogo.Context;
+using APICatalogo.DTOs;
 using APICatalogo.Filters;
 using APICatalogo.Models;
 using APICatalogo.Services;
@@ -21,7 +22,7 @@ public class CategoriasController : ControllerBase
 
     [HttpGet("GetCategories")]
     [ServiceFilter(typeof(ApiLoggingFilter))]
-    public async Task<ActionResult<IEnumerable<Categoria>>> GetCategories()
+    public async Task<ActionResult<IEnumerable<CategoriaDTO>>> GetCategories()
     {
         var categoria = _categoriaService.GetCategories();
         return Ok(categoria);
@@ -35,28 +36,28 @@ public class CategoriasController : ControllerBase
     }
 
     [HttpGet("{id:int}", Name = "GetCategoryDetailsById")]
-    public async Task<ActionResult<Categoria>> GetCategoryDetailsById(int id)
+    public async Task<ActionResult<CategoriaDTO>> GetCategoryDetailsById(int id)
     {
         var categoria = _categoriaService.GetCategoryDetailsById(id);
         return Ok(categoria);
     }
 
     [HttpPost("CreateCategory")]
-    public ActionResult<Categoria> CreateCategory(Categoria categoriaPayload)
+    public ActionResult<CategoriaDTO> CreateCategory(CategoriaDTO categoriaPayload)
     {
         var categoria = _categoriaService.CreateCategory(categoriaPayload);
         return Ok(categoria);
     }
 
     [HttpPut("{id:int}", Name = "UpdateCategoryById")]
-    public ActionResult<Categoria> UpdateCategoryById(int id, Categoria categoryToUpdate)
+    public ActionResult<CategoriaDTO> UpdateCategoryById(int id, CategoriaDTO categoryToUpdate)
     {
         var categoria = _categoriaService.UpdateCategoryById(id, categoryToUpdate);
         return Ok(categoria);
     }
 
     [HttpDelete("{id:int}", Name = "DeleteCategoryById")]
-    public ActionResult<Categoria> DeleteCategoryById(int id)
+    public ActionResult<CategoriaDTO> DeleteCategoryById(int id)
     {
         var categoria = _categoriaService.DeleteCategoryById(id);
         return Ok(categoria);
