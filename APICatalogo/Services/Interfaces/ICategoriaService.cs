@@ -1,13 +1,14 @@
-﻿using APICatalogo.Models;
+﻿using APICatalogo.DTOs;
+using APICatalogo.Models;
 
 namespace APICatalogo.Services.Interfaces;
 
 public interface ICategoriaService
 {
-    IEnumerable<Categoria> GetCategories();
+    IEnumerable<CategoriaDTO> GetCategories();
     IEnumerable<Categoria> GetProductCategories();
-    Categoria GetCategoryDetailsById(int id);
-    Categoria CreateCategory(Categoria produtoPayload);
-    Categoria UpdateCategoryById(int id, Categoria categoryToUpdate);
-    Categoria DeleteCategoryById(int id);
+    CategoriaDTO GetCategoryDetailsById(int id);
+    CategoriaDTO CreateCategory(CategoriaDTO produtoPayload);
+    CategoriaDTO UpdateCategoryById(int id, CategoriaDTO categoryToUpdate);
+    CategoriaDTO DeleteCategoryById(int id);
 }
