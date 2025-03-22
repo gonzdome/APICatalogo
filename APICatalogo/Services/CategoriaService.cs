@@ -1,3 +1,4 @@
+using APICatalogo.DTOs;
 using APICatalogo.Models;
 using APICatalogo.Repositories;
 using APICatalogo.Repositories.Interfaces;
@@ -15,15 +16,21 @@ public class CategoriaService : ICategoriaService
         _unitOfWork = unitOfWork;
     }
 
-    public IEnumerable<Categoria> GetCategories()
+    public IEnumerable<CategoriaDTO> GetCategories()
     {
-        return _unitOfWork.CategoriaRepository.GetAll();
+        IEnumerable<Categoria> allCategories = _unitOfWork.CategoriaRepository.GetAll();
+
+        List<CategoriaDTO> categoriesDTO = new List<CategoriaDTO>();
+
+        var categoriesToDTO = allCategories.Select(c => MapCategoryDTO(c));
+
+        return categoriesToDTO;
     }
 
-    public Categoria GetCategoryDetailsById(int id)
+    public CategoriaDTO GetCategoryDetailsById(int id)
     {
         var category = GetAndReturnCategory(id);
-        return category;
+        return MapCategoryDTO(category);
     }
 
     public IEnumerable<Categoria> GetProductCategories()
@@ -31,14 +38,21 @@ public class CategoriaService : ICategoriaService
         return _unitOfWork.CategoriaRepository.GetProductCategories();
     }
 
-    public Categoria CreateCategory(Categoria categoriaPayload)
+    public CategoriaDTO CreateCategory(CategoriaDTO categoriaPayload)
     {
-        var category = _unitOfWork.CategoriaRepository.Create(categoriaPayload);
+        Categoria categoria = new Categoria();
+
+        categoria.Nome = categoriaPayload.Nome;
+        categoria.ImagemUrl = categoriaPayload.ImagemUrl;
+
+        var category = _unitOfWork.CategoriaRepository.Create(categoria);
+
         _unitOfWork.Commit();
-        return category;
+
+        return MapCategoryDTO(category);
     }
 
-    public Categoria UpdateCategoryById(int id, Categoria categoryToUpdate)
+    public CategoriaDTO UpdateCategoryById(int id, CategoriaDTO categoryToUpdate)
     {
         var category = GetAndReturnCategory(id);
 
@@ -47,15 +61,15 @@ public class CategoriaService : ICategoriaService
 
         var updatedCategory = _unitOfWork.CategoriaRepository.Update(category);
         _unitOfWork.Commit();
-        return updatedCategory;
+        return MapCategoryDTO(category);
     }
 
-    public Categoria DeleteCategoryById(int id)
+    public CategoriaDTO DeleteCategoryById(int id)
     {
         var category = GetAndReturnCategory(id);
         var deletedCategory = _unitOfWork.CategoriaRepository.Delete(category);
         _unitOfWork.Commit();
-        return deletedCategory;
+        return MapCategoryDTO(deletedCategory);
     }
 
     private Categoria? GetAndReturnCategory(int id)
@@ -65,5 +79,15 @@ public class CategoriaService : ICategoriaService
             throw new Exception($"Categoria with id {id} not found!");
 
         return category;
+    }
+
+    private static CategoriaDTO MapCategoryDTO(Categoria category)
+    {
+        CategoriaDTO categoryDTO = new CategoriaDTO();
+        categoryDTO.CategoriaId = category.CategoriaId;
+        categoryDTO.Nome = category.Nome;
+        categoryDTO.ImagemUrl = category.ImagemUrl;
+
+        return categoryDTO;
     }
 }
