@@ -39,8 +39,6 @@ builder.Services.AddScoped<ICategoriaService, CategoriaService>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-
-
 builder.Logging.AddProvider(new CustomLoggerProvider(new CustomLoggerProviderConfiguration
 {
     LogLevel = LogLevel.Information
