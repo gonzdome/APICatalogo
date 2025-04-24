@@ -17,11 +17,18 @@ public class ProdutosController : ControllerBase
         _produtoService = produtoService;
     }
 
+    [HttpGet("GetPaginatedProducts")]
+    public async Task<ActionResult<IEnumerable<Produto>>> GetPaginatedProducts([FromQuery] Pagination pagination)
+    {
+        var produtos = _produtoService.GetPaginatedProducts(pagination);
+        return Ok(produtos);
+    }
+
     [HttpGet("GetProducts")]
     public async Task<ActionResult<IEnumerable<Produto>>> GetProducts()
     {
-        var produto =  _produtoService.GetProducts();
-        return Ok(produto);
+        var produtos =  _produtoService.GetProducts();
+        return Ok(produtos);
     }
 
     [HttpGet("{id:int}", Name = "GetProductDetailsById")]
