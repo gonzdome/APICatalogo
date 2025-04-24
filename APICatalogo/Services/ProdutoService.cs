@@ -1,9 +1,4 @@
-﻿using APICatalogo.Models;
-using APICatalogo.Repositories.Interfaces;
-using APICatalogo.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-
-namespace APICatalogo.Services;
+﻿namespace APICatalogo.Services;
 
 public class ProdutoService : IProdutoService
 {
@@ -12,6 +7,10 @@ public class ProdutoService : IProdutoService
     public ProdutoService(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
+    }
+    public async Task<IEnumerable<Produto>> GetPaginatedProducts(Pagination pagination)
+    {
+        return _unitOfWork.ProdutoRepository.GetPaginatedProducts(pagination);
     }
 
     public async Task<IEnumerable<Produto>> GetProducts()
