@@ -1,4 +1,4 @@
-﻿namespace APICatalogo.Helpers;
+﻿namespace APICatalogo.Helpers.Paginate;
 
 public class Pagination
 {
@@ -6,14 +6,15 @@ public class Pagination
 
     const int maxPageSize = 50;
     public int PageNumber { get; set; } = 1;
-    public int PageSize { 
+    public int PageSize
+    {
         get
         {
             return _pageSize;
         }
-        set 
-        { 
-            _pageSize = (value > maxPageSize) ? maxPageSize : value;
+        set
+        {
+            _pageSize = value > maxPageSize ? maxPageSize : value;
         }
     }
 
