@@ -1,9 +1,4 @@
-﻿using APICatalogo.Context;
-using APICatalogo.Models;
-using APICatalogo.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
+﻿
 namespace APICatalogo.Controllers;
 
 [Route("api/products")]
@@ -17,22 +12,29 @@ public class ProdutosController : ControllerBase
         _produtoService = produtoService;
     }
 
+    //[HttpGet("GetPaginatedProducts")]
+    //public async Task<ActionResult<IEnumerable<ProdutoDTO>>> GetPaginatedProducts([FromQuery] Pagination pagination)
+    //{
+    //    var produtos = _produtoService.GetPaginatedProducts(pagination);
+    //    return Ok(produtos);
+    //}
+
     [HttpGet("GetPaginatedProducts")]
-    public async Task<ActionResult<IEnumerable<Produto>>> GetPaginatedProducts([FromQuery] Pagination pagination)
+    public async Task<ActionResult<PagedList<ProdutoDTO>>> GetPaginatedProducts([FromQuery] Pagination pagination)
     {
         var produtos = _produtoService.GetPaginatedProducts(pagination);
         return Ok(produtos);
     }
 
     [HttpGet("GetProducts")]
-    public async Task<ActionResult<IEnumerable<Produto>>> GetProducts()
+    public async Task<ActionResult<IEnumerable<ProdutoDTO>>> GetProducts()
     {
         var produtos =  _produtoService.GetProducts();
         return Ok(produtos);
     }
 
     [HttpGet("{id:int}", Name = "GetProductDetailsById")]
-    public async Task<ActionResult<Produto>> GetProductDetailsById(int id)
+    public async Task<ActionResult<ProdutoDTO>> GetProductDetailsById(int id)
     {
         var produto = _produtoService.GetProductDetailsById(id);
         return Ok(produto);
@@ -40,21 +42,21 @@ public class ProdutosController : ControllerBase
 
     [HttpPost]
     [Route("CreateProduct")]
-    public ActionResult<Produto> CreateProduct(Produto produtoPayload)
+    public ActionResult<ProdutoDTO> CreateProduct(ProdutoDTO productPayload)
     {
-        var produto = _produtoService.CreateProduct(produtoPayload);
+        var produto = _produtoService.CreateProduct(productPayload);
         return Ok(produto);
     }
 
     [HttpPut("{id:int}", Name = "UpdateProductById")]
-    public ActionResult<Produto> UpdateProductById(int id, Produto productToUpdate)
+    public ActionResult<ProdutoDTO> UpdateProductById(int id, ProdutoDTO productToUpdate)
     {
         var produto = _produtoService.UpdateProductById(id, productToUpdate);
         return Ok(produto);
     }
 
     [HttpDelete("{id:int}", Name = "DeleteProductById")]
-    public ActionResult<Produto> DeleteProductById(int id)
+    public ActionResult<ProdutoDTO> DeleteProductById(int id)
     {
         var produto = _produtoService.DeleteProductById(id);
         return Ok(produto);
