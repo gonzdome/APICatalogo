@@ -1,4 +1,6 @@
-﻿namespace APICatalogo.Services;
+﻿using APICatalogo.DTOs.Mappings;
+
+namespace APICatalogo.Services;
 
 public class ProdutoService : IProdutoService
 {
@@ -8,35 +10,44 @@ public class ProdutoService : IProdutoService
     {
         _unitOfWork = unitOfWork;
     }
-    public async Task<IEnumerable<Produto>> GetPaginatedProducts(Pagination pagination)
+
+    public async Task<IEnumerable<ProdutoDTO>> GetPaginatedProducts(Pagination pagination)
     {
-        return _unitOfWork.ProdutoRepository.GetPaginatedProducts(pagination);
+        var paginatedProducts = _unitOfWork.ProdutoRepository.GetPaginatedProducts(pagination);
+        var paginatedProductsToDTO = paginatedProducts.Select(c => c.MapToProductDTO());
+        return paginatedProductsToDTO;
     }
 
-    public async Task<IEnumerable<Produto>> GetProducts()
+    public async Task<IEnumerable<ProdutoDTO>> GetProducts()
     {
-        return _unitOfWork.ProdutoRepository.GetAll();
+        var products = _unitOfWork.ProdutoRepository.GetAll();
+        var productsToDTO = products.Select(c => c.MapToProductDTO());
+        return productsToDTO;
     }
 
-    public async Task<Produto> GetProductDetailsById(int id)
+    public async Task<ProdutoDTO> GetProductDetailsById(int id)
     {
         var product = GetAndReturnProduct(id);
-        return product;
+        return product.MapToProductDTO();
     }
 
-    IEnumerable<Produto> IProdutoService.GetProductsByCategoryId(int categoryId)
+    public IEnumerable<Produto> GetProductsByCategoryId(int productId)
     {
-        return _unitOfWork.ProdutoRepository.GetProductsByCategoryId(categoryId);
+        return _unitOfWork.ProdutoRepository.GetProductsByCategoryId(productId);
     }
 
-    public Produto CreateProduct(Produto produtoPayload)
+    public ProdutoDTO CreateProduct(ProdutoDTO productPayload)
     {
-        var product = _unitOfWork.ProdutoRepository.Create(produtoPayload);
+        Produto product = productPayload.MapToProduct();
+
+        var createdProduct = _unitOfWork.ProdutoRepository.Create(product);
+
         _unitOfWork.Commit();
-        return product;
+
+        return createdProduct.MapToProductDTO();
     }
 
-    public Produto UpdateProductById(int id, Produto productToUpdate)
+    public ProdutoDTO UpdateProductById(int id, ProdutoDTO productToUpdate)
     {
         var product = GetAndReturnProduct(id);
 
@@ -49,15 +60,15 @@ public class ProdutoService : IProdutoService
 
         var updatedProduct = _unitOfWork.ProdutoRepository.Update(product);
         _unitOfWork.Commit();
-        return updatedProduct;
+        return updatedProduct.MapToProductDTO();
     }
 
-    public Produto DeleteProductById(int id)
+    public ProdutoDTO DeleteProductById(int id)
     {
         var product = GetAndReturnProduct(id);
         var deletedProduct = _unitOfWork.ProdutoRepository.Delete(product);
         _unitOfWork.Commit();
-        return deletedProduct;
+        return deletedProduct.MapToProductDTO();
     }
     private Produto? GetAndReturnProduct(int id)
     {

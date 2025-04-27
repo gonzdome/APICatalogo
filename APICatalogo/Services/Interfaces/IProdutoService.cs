@@ -1,14 +1,12 @@
-﻿using APICatalogo.Models;
-
-namespace APICatalogo.Services.Interfaces;
+﻿namespace APICatalogo.Services.Interfaces;
 
 public interface IProdutoService
 {
-    Task<IEnumerable<Produto>> GetPaginatedProducts(Pagination pagination);
-    Task<IEnumerable<Produto>> GetProducts();
-    Task<Produto> GetProductDetailsById(int id);
+    Task<IEnumerable<ProdutoDTO>> GetPaginatedProducts(Pagination pagination);
+    Task<IEnumerable<ProdutoDTO>> GetProducts();
+    Task<ProdutoDTO> GetProductDetailsById(int id);
     IEnumerable<Produto> GetProductsByCategoryId(int categoryId);
-    Produto CreateProduct(Produto produtoPayload);
-    Produto UpdateProductById(int id, Produto productToUpdate);
-    Produto DeleteProductById(int id);
+    ProdutoDTO CreateProduct(ProdutoDTO produtoPayload);
+    ProdutoDTO UpdateProductById(int id, ProdutoDTO productToUpdate);
+    ProdutoDTO DeleteProductById(int id);
 }
