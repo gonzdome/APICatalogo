@@ -2,7 +2,7 @@
 
 public static class ProdutoDTOMappingExtensions
 {
-    public static ProdutoDTO MapToCategoryDTO(this Produto product)
+    public static ProdutoDTO MapToProductDTO(this Produto product)
     {
         if (product == null)
             return null;
@@ -21,7 +21,7 @@ public static class ProdutoDTOMappingExtensions
         };
     }
 
-    public static Produto MapToCategory(this ProdutoDTO productDTO)
+    public static Produto MapToProduct(this ProdutoDTO productDTO)
     {
         if (productDTO == null)
             return null;
