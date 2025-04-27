@@ -1,9 +1,4 @@
-﻿using APICatalogo.Validation;
-using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace APICatalogo.Models;
+﻿namespace APICatalogo.Models;
 
 [Table("Categorias")]
 public class Categoria
