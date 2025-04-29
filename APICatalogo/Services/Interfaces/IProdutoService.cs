@@ -2,7 +2,7 @@
 
 public interface IProdutoService
 {
-    Task<IEnumerable<ProdutoDTO>> GetPaginatedProducts(Pagination pagination);
+    Task<GetPaginatedProductsViewModel> GetPaginatedProducts(Pagination pagination);
     Task<IEnumerable<ProdutoDTO>> GetProducts();
     Task<ProdutoDTO> GetProductDetailsById(int id);
     IEnumerable<Produto> GetProductsByCategoryId(int categoryId);

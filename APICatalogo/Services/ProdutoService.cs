@@ -11,11 +11,25 @@ public class ProdutoService : IProdutoService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<IEnumerable<ProdutoDTO>> GetPaginatedProducts(Pagination pagination)
+    public async Task<GetPaginatedProductsViewModel> GetPaginatedProducts(Pagination pagination)
     {
         var paginatedProducts = _unitOfWork.ProdutoRepository.GetPaginatedProducts(pagination);
         var paginatedProductsToDTO = paginatedProducts.Select(c => c.MapToProductDTO());
-        return paginatedProductsToDTO;
+
+        GetPaginatedProductsViewModel response = new GetPaginatedProductsViewModel();
+
+        response.products = paginatedProductsToDTO;
+        response.paginationMetadata = new PaginationMetadata()
+        {
+            TotalCount = paginatedProducts.TotalCount,
+            PageSize = paginatedProducts.PageSize,
+            CurrentPage = paginatedProducts.CurrentPage,
+            TotalPages = paginatedProducts.TotalPages,
+            HasNextPage = paginatedProducts.HasNextPage,
+            HasPreviousPage = paginatedProducts.HasPreviousPage,
+        };
+
+        return response;
     }
 
     public async Task<IEnumerable<ProdutoDTO>> GetProducts()
