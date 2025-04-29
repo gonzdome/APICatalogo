@@ -2,9 +2,10 @@
 
 public class Pagination
 {
-    private int _pageSize;
-
     const int maxPageSize = 50;
+
+    private int _pageSize = maxPageSize;
+
     public int PageNumber { get; set; } = 1;
     public int PageSize
     {
