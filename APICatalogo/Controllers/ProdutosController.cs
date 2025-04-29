@@ -1,5 +1,4 @@
-﻿
-namespace APICatalogo.Controllers;
+﻿namespace APICatalogo.Controllers;
 
 [Route("api/products")]
 [ApiController]
@@ -11,13 +10,6 @@ public class ProdutosController : ControllerBase
     {
         _produtoService = produtoService;
     }
-
-    //[HttpGet("GetPaginatedProducts")]
-    //public async Task<ActionResult<IEnumerable<ProdutoDTO>>> GetPaginatedProducts([FromQuery] Pagination pagination)
-    //{
-    //    var produtos = _produtoService.GetPaginatedProducts(pagination);
-    //    return Ok(produtos);
-    //}
 
     [HttpGet("GetPaginatedProducts")]
     public async Task<ActionResult<PagedList<ProdutoDTO>>> GetPaginatedProducts([FromQuery] Pagination pagination)
