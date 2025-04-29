@@ -28,6 +28,6 @@ public class ProdutoDTO
 
     public int CategoriaId { get; set; }
 
-    [JsonIgnore]
+    [Newtonsoft.Json.JsonIgnore]
     public Categoria? Categoria { get; set; }
 }

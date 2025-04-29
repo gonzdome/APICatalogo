@@ -34,6 +34,6 @@ public class Produto
 
     public int CategoriaId { get; set; }
 
-    [JsonIgnore]
+    [Newtonsoft.Json.JsonIgnore]
     public Categoria? Categoria { get; set; }
 }

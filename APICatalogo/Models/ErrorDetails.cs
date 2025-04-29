@@ -8,6 +8,6 @@ public class ErrorDetails
 
     public override string ToString()
     {
-        return JsonSerializer.Serialize(this);
+        return System.Text.Json.JsonSerializer.Serialize(this);
     }
 }
