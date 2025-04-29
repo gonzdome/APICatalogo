@@ -17,12 +17,10 @@ public class CategoriaService : ICategoriaService
         _unitOfWork = unitOfWork;
     }
 
-    public IEnumerable<CategoriaDTO> GetCategories()
+    public IEnumerable<CategoriaDTO> GetPaginatedCategories(Pagination pagination)
     {
-        IEnumerable<Categoria> allCategories = _unitOfWork.CategoriaRepository.GetAll();
-
+        var allCategories = _unitOfWork.CategoriaRepository.GetPaginatedCategories(pagination);
         var categoriesToDTO = allCategories.Select(c => c.MapToCategoryDTO());
-
         return categoriesToDTO;
     }
 

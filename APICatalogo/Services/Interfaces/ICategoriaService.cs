@@ -5,7 +5,7 @@ namespace APICatalogo.Services.Interfaces;
 
 public interface ICategoriaService
 {
-    IEnumerable<CategoriaDTO> GetCategories();
+    IEnumerable<CategoriaDTO> GetPaginatedCategories(Pagination pagination);
     IEnumerable<Categoria> GetProductCategories();
     CategoriaDTO GetCategoryDetailsById(int id);
     CategoriaDTO CreateCategory(CategoriaDTO produtoPayload);
