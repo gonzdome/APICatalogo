@@ -1,6 +1,4 @@
-﻿using APICatalogo.Filters;
-
-namespace APICatalogo.Controllers;
+﻿namespace APICatalogo.Controllers;
 
 [Route("api/categories")]
 [ApiController]
@@ -17,8 +15,11 @@ public class CategoriasController : ControllerBase
     [ServiceFilter(typeof(ApiLoggingFilter))]
     public async Task<ActionResult<PagedList<CategoriaDTO>>> GePaginatedtCategories([FromQuery] Pagination pagination)
     {
-        var categoria = _categoriaService.GetPaginatedCategories(pagination);
-        return Ok(categoria);
+        var response = await _categoriaService.GetPaginatedCategories(pagination);
+
+        Response.Headers.Append("X-Pagination", JsonConvert.SerializeObject(response.paginationMetadata));
+        
+        return Ok(response.categories);
     }
 
     [HttpGet("GetProductCategories")]
