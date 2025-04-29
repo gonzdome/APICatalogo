@@ -1,11 +1,4 @@
-﻿using APICatalogo.Context;
-using APICatalogo.DTOs;
-using APICatalogo.Filters;
-using APICatalogo.Models;
-using APICatalogo.Services;
-using APICatalogo.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using APICatalogo.Filters;
 
 namespace APICatalogo.Controllers;
 
@@ -20,11 +13,11 @@ public class CategoriasController : ControllerBase
         _categoriaService = categoriaService;
     }
 
-    [HttpGet("GetCategories")]
+    [HttpGet("GetPaginatedtCategories")]
     [ServiceFilter(typeof(ApiLoggingFilter))]
-    public async Task<ActionResult<IEnumerable<CategoriaDTO>>> GetCategories()
+    public async Task<ActionResult<PagedList<CategoriaDTO>>> GePaginatedtCategories([FromQuery] Pagination pagination)
     {
-        var categoria = _categoriaService.GetCategories();
+        var categoria = _categoriaService.GetPaginatedCategories(pagination);
         return Ok(categoria);
     }
 
