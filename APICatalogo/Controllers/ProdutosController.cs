@@ -14,8 +14,11 @@ public class ProdutosController : ControllerBase
     [HttpGet("GetPaginatedProducts")]
     public async Task<ActionResult<PagedList<ProdutoDTO>>> GetPaginatedProducts([FromQuery] Pagination pagination)
     {
-        var produtos = _produtoService.GetPaginatedProducts(pagination);
-        return Ok(produtos);
+        var response = await _produtoService.GetPaginatedProducts(pagination);
+
+        Response.Headers.Append("X-Pagination", JsonConvert.SerializeObject(response.paginationMetadata));
+
+        return Ok(response.products);
     }
 
     [HttpGet("GetProducts")]
