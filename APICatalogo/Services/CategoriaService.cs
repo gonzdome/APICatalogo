@@ -3,9 +3,6 @@ using APICatalogo.DTOs.Mappings;
 using APICatalogo.Models;
 using APICatalogo.Repositories;
 using APICatalogo.Repositories.Interfaces;
-using APICatalogo.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-
 namespace APICatalogo.Services;
 
 public class CategoriaService : ICategoriaService
@@ -17,11 +14,25 @@ public class CategoriaService : ICategoriaService
         _unitOfWork = unitOfWork;
     }
 
-    public IEnumerable<CategoriaDTO> GetPaginatedCategories(Pagination pagination)
+    public async Task<GetPaginatedCategoriesViewModel> GetPaginatedCategories(Pagination pagination)
     {
         var allCategories = _unitOfWork.CategoriaRepository.GetPaginatedCategories(pagination);
         var categoriesToDTO = allCategories.Select(c => c.MapToCategoryDTO());
-        return categoriesToDTO;
+
+        GetPaginatedCategoriesViewModel response = new GetPaginatedCategoriesViewModel();
+       
+        response.categories = categoriesToDTO;
+        response.paginationMetadata = new PaginationMetadata()
+        {
+            TotalCount = allCategories.TotalCount,
+            PageSize = allCategories.PageSize,
+            CurrentPage = allCategories.CurrentPage,
+            TotalPages = allCategories.TotalPages,
+            HasNextPage = allCategories.HasNextPage,
+            HasPreviousPage = allCategories.HasPreviousPage,
+        };
+
+        return response;
     }
 
     public CategoriaDTO GetCategoryDetailsById(int id)
