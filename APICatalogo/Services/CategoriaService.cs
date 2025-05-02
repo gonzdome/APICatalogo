@@ -1,5 +1,6 @@
 using APICatalogo.DTOs;
 using APICatalogo.DTOs.Mappings;
+using APICatalogo.Helpers.Paginate;
 using APICatalogo.Models;
 using APICatalogo.Repositories;
 using APICatalogo.Repositories.Interfaces;
@@ -19,8 +20,23 @@ public class CategoriaService : ICategoriaService
         var allCategories = _unitOfWork.CategoriaRepository.GetPaginatedCategories(pagination);
         var categoriesToDTO = allCategories.Select(c => c.MapToCategoryDTO());
 
+        return PaginatedCategoriesResponse(allCategories, categoriesToDTO);
+    }
+
+
+
+    public async Task<GetPaginatedCategoriesViewModel> GetFilteredCategories(CategoryNameSearch filters)
+    {
+        var allCategories = _unitOfWork.CategoriaRepository.GetFilteredCategories(filters);
+        var categoriesToDTO = allCategories.Select(c => c.MapToCategoryDTO());
+
+        return PaginatedCategoriesResponse(allCategories, categoriesToDTO);
+    }
+
+    private static GetPaginatedCategoriesViewModel PaginatedCategoriesResponse(PagedList<Categoria> allCategories, IEnumerable<CategoriaDTO> categoriesToDTO)
+    {
         GetPaginatedCategoriesViewModel response = new GetPaginatedCategoriesViewModel();
-       
+
         response.categories = categoriesToDTO;
         response.paginationMetadata = new PaginationMetadata()
         {
@@ -88,6 +104,4 @@ public class CategoriaService : ICategoriaService
 
         return category;
     }
-
-
 }

@@ -3,6 +3,7 @@
 public interface ICategoriaService
 {
     Task<GetPaginatedCategoriesViewModel> GetPaginatedCategories(Pagination pagination);
+    Task<GetPaginatedCategoriesViewModel> GetFilteredCategories(CategoryNameSearch filters);
     IEnumerable<Categoria> GetProductCategories();
     CategoriaDTO GetCategoryDetailsById(int id);
     CategoriaDTO CreateCategory(CategoriaDTO produtoPayload);
