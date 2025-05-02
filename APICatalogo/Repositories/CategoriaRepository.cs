@@ -18,6 +18,17 @@ public class CategoriaRepository : GenericRepository<Categoria>, ICategoriaRepos
         return paginatedCategories;
     }
 
+    public PagedList<Categoria> GetFilteredCategories(CategoryNameSearch filters)
+    {
+        var categories = GetAll().OrderBy(p => p.Nome).AsQueryable();
+
+        if (!string.IsNullOrEmpty(filters.Name))
+            categories = categories.Where(c => c.Nome.Contains(filters.Name));
+
+        var paginatedCategories = PagedList<Categoria>.ToPagedList(categories, filters.PageNumber, filters.PageSize);
+        return paginatedCategories;
+    }
+
     public IEnumerable<Categoria> GetProductCategories()
     {
         return _context.Categorias.Include(c => c.Produtos).AsNoTracking().ToList();
