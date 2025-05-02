@@ -21,6 +21,16 @@ public class ProdutosController : ControllerBase
         return Ok(response.products);
     }
 
+    [HttpGet("GetFilteredProducts")]
+    public async Task<ActionResult<PagedList<ProdutoDTO>>> GetFilteredProducts([FromQuery] ProductPriceSearch filters)
+    {
+        var response = await _produtoService.GetFilteredProducts(filters);
+
+        Response.Headers.Append("X-Pagination", JsonConvert.SerializeObject(response.paginationMetadata));
+
+        return Ok(response.products);
+    }
+
     [HttpGet("GetProducts")]
     public async Task<ActionResult<IEnumerable<ProdutoDTO>>> GetProducts()
     {
