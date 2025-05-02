@@ -11,14 +11,25 @@ public class CategoriasController : ControllerBase
         _categoriaService = categoriaService;
     }
 
-    [HttpGet("GetPaginatedtCategories")]
+    [HttpGet("GetPaginatedCategories")]
     [ServiceFilter(typeof(ApiLoggingFilter))]
-    public async Task<ActionResult<PagedList<CategoriaDTO>>> GePaginatedtCategories([FromQuery] Pagination pagination)
+    public async Task<ActionResult<PagedList<CategoriaDTO>>> GetPaginatedCategories([FromQuery] Pagination pagination)
     {
         var response = await _categoriaService.GetPaginatedCategories(pagination);
 
         Response.Headers.Append("X-Pagination", JsonConvert.SerializeObject(response.paginationMetadata));
         
+        return Ok(response.categories);
+    }
+
+    [HttpGet("GetFilteredCategories")]
+    [ServiceFilter(typeof(ApiLoggingFilter))]
+    public async Task<ActionResult<PagedList<CategoriaDTO>>> GetFilteredCategories([FromQuery] CategoryNameSearch filters)
+    {
+        var response = await _categoriaService.GetFilteredCategories(filters);
+
+        Response.Headers.Append("X-Pagination", JsonConvert.SerializeObject(response.paginationMetadata));
+
         return Ok(response.categories);
     }
 
