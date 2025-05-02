@@ -3,6 +3,7 @@
 public interface IProdutoService
 {
     Task<GetPaginatedProductsViewModel> GetPaginatedProducts(Pagination pagination);
+    Task<GetPaginatedProductsViewModel> GetFilteredProducts(ProductPriceSearch filters);
     Task<IEnumerable<ProdutoDTO>> GetProducts();
     Task<ProdutoDTO> GetProductDetailsById(int id);
     IEnumerable<Produto> GetProductsByCategoryId(int categoryId);

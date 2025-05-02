@@ -16,6 +16,19 @@ public class ProdutoService : IProdutoService
         var paginatedProducts = _unitOfWork.ProdutoRepository.GetPaginatedProducts(pagination);
         var paginatedProductsToDTO = paginatedProducts.Select(c => c.MapToProductDTO());
 
+        return PaginatedProductsResponse(paginatedProducts, paginatedProductsToDTO);
+    }
+
+    public async Task<GetPaginatedProductsViewModel> GetFilteredProducts(ProductPriceSearch filters)
+    {
+        var paginatedProducts = _unitOfWork.ProdutoRepository.GetFilteredProducts(filters);
+        var paginatedProductsToDTO = paginatedProducts.Select(c => c.MapToProductDTO());
+
+        return PaginatedProductsResponse(paginatedProducts, paginatedProductsToDTO);
+    }
+
+    private static GetPaginatedProductsViewModel PaginatedProductsResponse(PagedList<Produto> paginatedProducts, IEnumerable<ProdutoDTO> paginatedProductsToDTO)
+    {
         GetPaginatedProductsViewModel response = new GetPaginatedProductsViewModel();
 
         response.products = paginatedProductsToDTO;
