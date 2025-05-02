@@ -7,6 +7,7 @@ global using APICatalogo.Filters;
 global using APICatalogo.Context;
 global using APICatalogo.Validation;
 global using APICatalogo.Helpers.Paginate;
+global using APICatalogo.Helpers.Paginate.Filters;
 global using APICatalogo.Repositories.Interfaces;
 global using APICatalogo.Services.Interfaces;
 
