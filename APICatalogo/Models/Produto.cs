@@ -1,9 +1,4 @@
-﻿using APICatalogo.Validation;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
-
-namespace APICatalogo.Models;
+﻿namespace APICatalogo.Models;
 
 [Table("Produtos")]
 public class Produto
@@ -34,6 +29,6 @@ public class Produto
 
     public int CategoriaId { get; set; }
 
-    [Newtonsoft.Json.JsonIgnore]
+    [System.Text.Json.Serialization.JsonIgnore]
     public Categoria? Categoria { get; set; }
 }
