@@ -10,38 +10,41 @@ public class ProdutoRepository : GenericRepository<Produto>, IProdutoRepository
     {
     }
 
-    public IEnumerable<Produto> GetProductsByCategoryId(int categoryId)
+    public async Task<IEnumerable<Produto>> GetProductsByCategoryId(int categoryId)
     {
-        return GetAll().Where(c => c.CategoriaId == categoryId);
+        var products = await GetAll();
+        return products.Where(c => c.CategoriaId == categoryId);
     }
 
-    public PagedList<Produto> GetPaginatedProducts(Pagination pagination)
+    public async Task<PagedList<Produto>> GetPaginatedProducts(Pagination pagination)
     {
-        var products = GetAll().OrderBy(p => p.Nome).AsQueryable();
-        var paginatedProducts = PagedList<Produto>.ToPagedList(products, pagination.PageNumber, pagination.PageSize);
+        var products = await GetAll();
+        var orderedProducts = products.OrderBy(p => p.Nome).AsQueryable();
+        var paginatedProducts = PagedList<Produto>.ToPagedList(orderedProducts, pagination.PageNumber, pagination.PageSize);
         return paginatedProducts;
     }
 
-    public PagedList<Produto> GetFilteredProducts(ProductPriceSearch filter)
+    public async Task<PagedList<Produto>> GetFilteredProducts(ProductPriceSearch filter)
     {
-        var products = GetAll().OrderBy(p => p.Nome).AsQueryable();
+        var products = await GetAll();
+        var orderedProducts = products.OrderBy(p => p.Nome).AsQueryable();
 
         if (filter.Price.HasValue &&!string.IsNullOrEmpty(filter.Condition))
         {
             decimal preco = filter.Price.Value;
 
-            products = filter.Condition.ToLowerInvariant() switch
+            orderedProducts = filter.Condition.ToLowerInvariant() switch
             {
-                "bigger" => products.Where(p => p.Preco > preco),
-                "lesser" => products.Where(p => p.Preco < preco),
-                "equals" => products.Where(p => p.Preco == preco),
-                _ => products
+                "bigger" => orderedProducts.Where(p => p.Preco > preco),
+                "lesser" => orderedProducts.Where(p => p.Preco < preco),
+                "equals" => orderedProducts.Where(p => p.Preco == preco),
+                _ => orderedProducts
             };
 
-            products = products.OrderBy(p => p.Preco);
+            orderedProducts = orderedProducts.OrderBy(p => p.Preco);
         }
 
-        var filteredProducts = PagedList<Produto>.ToPagedList(products, filter.PageNumber, filter.PageSize);
+        var filteredProducts = PagedList<Produto>.ToPagedList(orderedProducts, filter.PageNumber, filter.PageSize);
         return filteredProducts;
     }
 }
