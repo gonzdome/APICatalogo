@@ -4,9 +4,9 @@ public interface ICategoriaService
 {
     Task<GetPaginatedCategoriesViewModel> GetPaginatedCategories(Pagination pagination);
     Task<GetPaginatedCategoriesViewModel> GetFilteredCategories(CategoryNameSearch filters);
-    IEnumerable<Categoria> GetProductCategories();
-    CategoriaDTO GetCategoryDetailsById(int id);
-    CategoriaDTO CreateCategory(CategoriaDTO produtoPayload);
-    CategoriaDTO UpdateCategoryById(int id, CategoriaDTO categoryToUpdate);
-    CategoriaDTO DeleteCategoryById(int id);
+    Task<IEnumerable<Categoria>> GetProductCategories();
+    Task<CategoriaDTO> GetCategoryDetailsById(int id);
+    Task<CategoriaDTO> CreateCategory(CategoriaDTO produtoPayload);
+    Task<CategoriaDTO> UpdateCategoryById(int id, CategoriaDTO categoryToUpdate);
+    Task<CategoriaDTO> DeleteCategoryById(int id);
 }

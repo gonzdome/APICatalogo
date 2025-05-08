@@ -17,17 +17,15 @@ public class CategoriaService : ICategoriaService
 
     public async Task<GetPaginatedCategoriesViewModel> GetPaginatedCategories(Pagination pagination)
     {
-        var allCategories = _unitOfWork.CategoriaRepository.GetPaginatedCategories(pagination);
+        var allCategories = await _unitOfWork.CategoriaRepository.GetPaginatedCategories(pagination);
         var categoriesToDTO = allCategories.Select(c => c.MapToCategoryDTO());
 
         return PaginatedCategoriesResponse(allCategories, categoriesToDTO);
     }
 
-
-
     public async Task<GetPaginatedCategoriesViewModel> GetFilteredCategories(CategoryNameSearch filters)
     {
-        var allCategories = _unitOfWork.CategoriaRepository.GetFilteredCategories(filters);
+        var allCategories = await _unitOfWork.CategoriaRepository.GetFilteredCategories(filters);
         var categoriesToDTO = allCategories.Select(c => c.MapToCategoryDTO());
 
         return PaginatedCategoriesResponse(allCategories, categoriesToDTO);
@@ -51,54 +49,54 @@ public class CategoriaService : ICategoriaService
         return response;
     }
 
-    public CategoriaDTO GetCategoryDetailsById(int id)
+    public async Task<CategoriaDTO> GetCategoryDetailsById(int id)
     {
-        var category = GetAndReturnCategoryById(id);
+        var category = await GetAndReturnCategoryById(id);
         return category.MapToCategoryDTO();
     }
 
-    public IEnumerable<Categoria> GetProductCategories()
+    public async Task<IEnumerable<Categoria>> GetProductCategories()
     {
-        return _unitOfWork.CategoriaRepository.GetProductCategories();
+        return await _unitOfWork.CategoriaRepository.GetProductCategories();
     }
 
-    public CategoriaDTO CreateCategory(CategoriaDTO categoryPayload)
+    public async Task<CategoriaDTO> CreateCategory(CategoriaDTO categoryPayload)
     {
         Categoria category = categoryPayload.MapToCategory();
 
-        var createdCategory = _unitOfWork.CategoriaRepository.Create(category);
+        var createdCategory = await _unitOfWork.CategoriaRepository.Create(category);
 
         _unitOfWork.Commit();
 
         return createdCategory.MapToCategoryDTO();
     }
 
-    public CategoriaDTO UpdateCategoryById(int id, CategoriaDTO categoryToUpdate)
+    public async Task<CategoriaDTO> UpdateCategoryById(int id, CategoriaDTO categoryToUpdate)
     {
-        var category = GetAndReturnCategoryById(id);
+        var category = await GetAndReturnCategoryById(id);
 
         category.Nome = categoryToUpdate.Nome;
         category.ImagemUrl = categoryToUpdate.ImagemUrl;
 
-        var updatedCategory = _unitOfWork.CategoriaRepository.Update(category);
+        var updatedCategory = await _unitOfWork.CategoriaRepository.Update(category);
         _unitOfWork.Commit();
         return category.MapToCategoryDTO();
     }
 
-    public CategoriaDTO DeleteCategoryById(int id)
+    public async Task<CategoriaDTO> DeleteCategoryById(int id)
     {
-        var category = GetAndReturnCategoryById(id);
+        var category = await GetAndReturnCategoryById(id);
 
-        var deletedCategory = _unitOfWork.CategoriaRepository.Delete(category);
+        var deletedCategory = await _unitOfWork.CategoriaRepository.Delete(category);
 
         _unitOfWork.Commit();
 
         return category.MapToCategoryDTO();
     }
 
-    private Categoria? GetAndReturnCategoryById(int id)
+    private async Task<Categoria?> GetAndReturnCategoryById(int id)
     {
-        var category = _unitOfWork.CategoriaRepository.Get(p => p.CategoriaId == id);
+        var category = await _unitOfWork.CategoriaRepository.Get(p => p.CategoriaId == id);
         if (category == null)
             throw new Exception($"Categoria with id {id} not found!");
 

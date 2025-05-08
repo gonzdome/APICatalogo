@@ -11,27 +11,29 @@ public class CategoriaRepository : GenericRepository<Categoria>, ICategoriaRepos
     {
     }
 
-    public PagedList<Categoria> GetPaginatedCategories(Pagination pagination)
+    public async Task<PagedList<Categoria>> GetPaginatedCategories(Pagination pagination)
     {
-        var categories = GetAll().OrderBy(p => p.Nome).AsQueryable();
-        var paginatedCategories = PagedList<Categoria>.ToPagedList(categories, pagination.PageNumber, pagination.PageSize);
+        var categories = await GetAll();
+        var orderedCategories = categories.OrderBy(p => p.Nome).AsQueryable();
+
+        var paginatedCategories = PagedList<Categoria>.ToPagedList(orderedCategories, pagination.PageNumber, pagination.PageSize);
         return paginatedCategories;
     }
 
-    public PagedList<Categoria> GetFilteredCategories(CategoryNameSearch filters)
+    public async Task<PagedList<Categoria>> GetFilteredCategories(CategoryNameSearch filters)
     {
-        var categories = GetAll().OrderBy(p => p.Nome).AsQueryable();
+        var categories = await GetAll();
+        var orderedCategories = categories.OrderBy(p => p.Nome).AsQueryable();
 
         if (!string.IsNullOrEmpty(filters.Name))
             categories = categories.Where(c => c.Nome.Contains(filters.Name));
 
-        var paginatedCategories = PagedList<Categoria>.ToPagedList(categories, filters.PageNumber, filters.PageSize);
+        var paginatedCategories = PagedList<Categoria>.ToPagedList(orderedCategories, filters.PageNumber, filters.PageSize);
         return paginatedCategories;
     }
 
-    public IEnumerable<Categoria> GetProductCategories()
+    public async Task<IEnumerable<Categoria>> GetProductCategories()
     {
-        return _context.Categorias.Include(c => c.Produtos).AsNoTracking().ToList();
+        return await _context.Categorias.Include(c => c.Produtos).AsNoTracking().ToListAsync();
     }
 }
-             
