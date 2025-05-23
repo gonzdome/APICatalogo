@@ -1,4 +1,6 @@
-﻿namespace APICatalogo.Controllers;
+﻿using Microsoft.AspNetCore.Authorization;
+
+namespace APICatalogo.Controllers;
 
 [Route("api/categories")]
 [ApiController]
@@ -11,6 +13,7 @@ public class CategoriasController : ControllerBase
         _categoriaService = categoriaService;
     }
 
+    [Authorize]
     [HttpGet("GetPaginatedCategories")]
     [ServiceFilter(typeof(ApiLoggingFilter))]
     public async Task<ActionResult<PagedList<CategoriaDTO>>> GetPaginatedCategories([FromQuery] Pagination pagination)
@@ -22,6 +25,7 @@ public class CategoriasController : ControllerBase
         return Ok(response.categories);
     }
 
+    [Authorize]
     [HttpGet("GetFilteredCategories")]
     [ServiceFilter(typeof(ApiLoggingFilter))]
     public async Task<ActionResult<PagedList<CategoriaDTO>>> GetFilteredCategories([FromQuery] CategoryNameSearch filters)
@@ -33,6 +37,7 @@ public class CategoriasController : ControllerBase
         return Ok(response.categories);
     }
 
+    [Authorize]
     [HttpGet("GetProductCategories")]
     public async Task<ActionResult<IEnumerable<Categoria>>> GetProductCategories()
     {
@@ -40,6 +45,7 @@ public class CategoriasController : ControllerBase
         return Ok(categoria);
     }
 
+    [Authorize]
     [HttpGet("{id:int}", Name = "GetCategoryDetailsById")]
     public async Task<ActionResult<CategoriaDTO>> GetCategoryDetailsById(int id)
     {
@@ -47,6 +53,7 @@ public class CategoriasController : ControllerBase
         return Ok(categoria);
     }
 
+    [Authorize]
     [HttpPost("CreateCategory")]
     public ActionResult<CategoriaDTO> CreateCategory(CategoriaDTO categoriaPayload)
     {
@@ -54,6 +61,7 @@ public class CategoriasController : ControllerBase
         return Ok(categoria);
     }
 
+    [Authorize]
     [HttpPut("{id:int}", Name = "UpdateCategoryById")]
     public ActionResult<CategoriaDTO> UpdateCategoryById(int id, CategoriaDTO categoryToUpdate)
     {
@@ -61,6 +69,7 @@ public class CategoriasController : ControllerBase
         return Ok(categoria);
     }
 
+    [Authorize]
     [HttpDelete("{id:int}", Name = "DeleteCategoryById")]
     public ActionResult<CategoriaDTO> DeleteCategoryById(int id)
     {

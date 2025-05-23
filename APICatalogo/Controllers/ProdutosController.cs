@@ -1,4 +1,6 @@
-﻿namespace APICatalogo.Controllers;
+﻿using Microsoft.AspNetCore.Authorization;
+
+namespace APICatalogo.Controllers;
 
 [Route("api/products")]
 [ApiController]
@@ -11,6 +13,7 @@ public class ProdutosController : ControllerBase
         _produtoService = produtoService;
     }
 
+    [Authorize]
     [HttpGet("GetPaginatedProducts")]
     public async Task<ActionResult<PagedList<ProdutoDTO>>> GetPaginatedProducts([FromQuery] Pagination pagination)
     {
@@ -21,6 +24,7 @@ public class ProdutosController : ControllerBase
         return Ok(response.products);
     }
 
+    [Authorize]
     [HttpGet("GetFilteredProducts")]
     public async Task<ActionResult<PagedList<ProdutoDTO>>> GetFilteredProducts([FromQuery] ProductPriceSearch filters)
     {
@@ -31,6 +35,7 @@ public class ProdutosController : ControllerBase
         return Ok(response.products);
     }
 
+    [Authorize]
     [HttpGet("GetProducts")]
     public async Task<ActionResult<IEnumerable<ProdutoDTO>>> GetProducts()
     {
@@ -38,6 +43,7 @@ public class ProdutosController : ControllerBase
         return Ok(produtos);
     }
 
+    [Authorize]
     [HttpGet("{id:int}", Name = "GetProductDetailsById")]
     public async Task<ActionResult<ProdutoDTO>> GetProductDetailsById(int id)
     {
@@ -45,6 +51,7 @@ public class ProdutosController : ControllerBase
         return Ok(produto);
     }
 
+    [Authorize]
     [HttpPost]
     [Route("CreateProduct")]
     public ActionResult<ProdutoDTO> CreateProduct(ProdutoDTO productPayload)
@@ -53,6 +60,7 @@ public class ProdutosController : ControllerBase
         return Ok(produto);
     }
 
+    [Authorize]
     [HttpPut("{id:int}", Name = "UpdateProductById")]
     public ActionResult<ProdutoDTO> UpdateProductById(int id, ProdutoDTO productToUpdate)
     {
@@ -60,6 +68,7 @@ public class ProdutosController : ControllerBase
         return Ok(produto);
     }
 
+    [Authorize]
     [HttpDelete("{id:int}", Name = "DeleteProductById")]
     public ActionResult<ProdutoDTO> DeleteProductById(int id)
     {
